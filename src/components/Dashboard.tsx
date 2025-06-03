@@ -41,25 +41,11 @@ const Dashboard: React.FC = () => {
   };
 
   const handleTokenCreated = (newToken: Token) => {
-    setTokens(prev => {
-      // Verificar si el token ya existe para evitar duplicados
-      const exists = prev.some(token => token.id === newToken.id);
-      if (exists) {
-        return prev;
-      }
-      return [...prev, newToken];
-    });
+    setTokens(prev => [...prev, newToken]);
   };
 
   const handleTransactionCreated = (newTransaction: Transaction) => {
-    setTransactions(prev => {
-      // Verificar si la transacción ya existe para evitar duplicados
-      const exists = prev.some(tx => tx.id === newTransaction.id);
-      if (exists) {
-        return prev;
-      }
-      return [...prev, newTransaction];
-    });
+    setTransactions(prev => [...prev, newTransaction]);
   };
 
   // Estadísticas del dashboard
@@ -79,13 +65,6 @@ const Dashboard: React.FC = () => {
       </div>
     );
   }
-
-  const handleCreateFirstToken = () => {
-    const mintTab = document.querySelector('[data-value="mint"]') as HTMLElement;
-    if (mintTab) {
-      mintTab.click();
-    }
-  };
 
   return (
     <div className="space-y-8">
@@ -141,7 +120,7 @@ const Dashboard: React.FC = () => {
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="overview">Resumen</TabsTrigger>
-          <TabsTrigger value="mint" data-value="mint">Crear Tokens</TabsTrigger>
+          <TabsTrigger value="mint">Crear Tokens</TabsTrigger>
           <TabsTrigger value="transfer">Transferir</TabsTrigger>
           <TabsTrigger value="market">Mercado</TabsTrigger>
           <TabsTrigger value="logs">Transacciones</TabsTrigger>
@@ -164,7 +143,7 @@ const Dashboard: React.FC = () => {
                 <div className="text-center py-8">
                   <Coins className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                   <p className="text-gray-500 mb-4">No tienes tokens aún</p>
-                  <Button onClick={handleCreateFirstToken}>
+                  <Button onClick={() => document.querySelector('[value="mint"]')?.click()}>
                     <PlusCircle className="w-4 h-4 mr-2" />
                     Crear tu primer token
                   </Button>
