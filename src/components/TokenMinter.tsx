@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -39,10 +40,10 @@ const TokenMinter: React.FC<TokenMinterProps> = ({ onTokenCreated }) => {
       
       console.log('Creating token:', formData);
 
-      // Crear token en la API con el supply ya establecido
+      // Crear token en la API
       const newToken = await api.createToken({
         ...formData,
-        currentSupply: formData.totalSupply, // Establecer el supply desde el inicio
+        currentSupply: 0,
         owner: user.walletAddress,
         contractAddress
       });
@@ -54,9 +55,10 @@ const TokenMinter: React.FC<TokenMinterProps> = ({ onTokenCreated }) => {
         formData.totalSupply
       );
 
+      // Actualizar supply después del mint
+      newToken.currentSupply = formData.totalSupply;
+
       console.log('Token created successfully:', newToken);
-      
-      // Solo llamar onTokenCreated una vez con el token completo
       onTokenCreated(newToken);
 
       toast({
